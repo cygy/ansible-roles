@@ -1,0 +1,19 @@
+---
+- name: add the '{{ docker_group }}' group
+  group:
+    name: "{{ docker_group }}"
+    gid: "{{ docker_group_id }}"
+
+- name: add the '{{ docker_user }}' user
+  user:
+    name: "{{ docker_user }}"
+    uid: "{{ docker_user_id }}"
+    group: "{{ docker_group }}"
+
+- name: create the data directory
+  file:
+    path: "{{ docker_data_directory }}"
+    state: directory
+    mode: 0755
+    owner: "{{ docker_user }}"
+    group: "{{ docker_group }}"

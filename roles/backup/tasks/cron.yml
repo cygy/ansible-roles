@@ -1,0 +1,63 @@
+---
+- name: update the backup directories properties (hosts)
+  file:
+    path: "/home/{{ backup_user }}/{{ item.host }}"
+    state: directory
+    mode: 0755
+    owner: "{{ backup_user }}"
+    group: "{{ backup_user }}"
+  with_items: "{{ backup_hosts }}"
+
+- name: create the backup directories (users)
+  file:
+    path: "/home/{{ backup_user }}/{{ item.0.host }}/{{ item.1.user }}"
+    state: directory
+    mode: 0755
+    owner: "{{ backup_user }}"
+    group: "{{ backup_user }}"
+  with_subelements:
+  - "{{ backup_hosts }}"
+  - tasks
+
+- name: create the backup directories (backup)
+  file:
+    path: "/home/{{ backup_user }}/{{ item.0.host }}/{{ item.1.user }}/backup"
+    state: directory
+    mode: 0755
+    owner: "{{ backup_user }}"
+    group: "{{ backup_user }}"
+  with_subelements:
+  - "{{ backup_hosts }}"
+  - tasks
+
+- name: create the backup directories (deleted)
+  file:
+    path: "/home/{{ backup_user }}/{{ item.0.host }}/{{ item.1.user }}/deleted"
+    state: directory
+    mode: 0755
+    owner: "{{ backup_user }}"
+    group: "{{ backup_user }}"
+  with_subelements:
+  - "{{ backup_hosts }}"
+  - tasks
+
+- name: ensure the cron jobs are present
+  cron:
+    name: "from ansible backup role {{ item.1.user }}@{{ item.0.host }}:{{ item.1.directory }}"
+    job: "rsync -azoh --stats --delete --backup --backup-dir=~/{{ item.0.host }}/{{ item.1.user }}/deleted {{ item.1.user }}@{{ item.0.host }}:{{ item.1.directory }} ~/{{ item.0.host }}/{{ item.1.user }}/backup"
+    weekday: "{{ item.1.schedule.weekday }}"
+    month: "{{ item.1.schedule.month }}"
+    day: "{{ item.1.schedule.day }}"
+    hour: "{{ item.1.schedule.hour }}"
+    minute: "{{ item.1.schedule.minute }}"
+    user: "{{ backup_user }}"
+  with_subelements:
+  - "{{ backup_hosts }}"
+  - tasks
+
+- name: add backed up servers as known hosts
+  known_hosts:
+    path: "/home/{{ backup_user }}/.ssh/known_hosts"
+    name: "{{ item.host }}"
+    key: "{{ item.known_host_ssh_key }}"
+  with_items: "{{ backup_hosts }}"

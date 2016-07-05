@@ -1,0 +1,7 @@
+---
+git_repositories:
+git_pkg_name: git
+git_user: git
+git_user_id: 998
+git_group: git
+git_group_id: 998

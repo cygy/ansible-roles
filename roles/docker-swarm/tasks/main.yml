@@ -1,0 +1,4 @@
+---
+- include: swarm-manager.yml
+- include: swarm-node.yml
+- include: iptable.yml

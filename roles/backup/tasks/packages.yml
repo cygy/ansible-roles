@@ -1,0 +1,6 @@
+---
+- name: ensure that the latest 'rsync' package is installed
+  apt:
+    pkg: "{{ rsync_pkg_name }}"
+    state: latest
+    update_cache: yes

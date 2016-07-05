@@ -1,0 +1,16 @@
+---
+paranoid_allow_ping: 1
+paranoid_allowed_udp_ports:
+paranoid_allowed_tcp_ports:
+paranoid_fail2ban_pkg_name: fail2ban
+paranoid_fail2ban_service_name: fail2ban
+
+#paranoid_fail2ban:
+#  default:
+#    ignoreip: "*.example.com"
+#    bantime: 600
+#    findtime: 600
+#    maxretry: 3
+#    destemail: admin@example.com
+#    sender: fail2ban@example.com
+#    sendername: Fail2Ban - example.com

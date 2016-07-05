@@ -1,0 +1,16 @@
+---
+docker_user: docker
+docker_user_id: 999
+docker_group: docker
+docker_group_id: 999
+docker_data_directory: /docker/data
+docker_apt_key_server: hkp://p80.pool.sks-keyservers.net:80
+docker_apt_key_id: 58118E89F3A912897C070ADBF76221572C52609D
+docker_older_repositories:
+  - docker.io
+  - lxc-docker
+docker_dependencies:
+  - apt-transport-https
+  - ca-certificates
+docker_pkg_name: docker-engine
+docker_service_name: docker

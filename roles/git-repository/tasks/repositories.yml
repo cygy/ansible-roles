@@ -1,0 +1,19 @@
+---
+- name: ensure that the repository directories exist
+  file:
+    path: /home/{{ git_user }}/{{ item }}
+    state: directory
+  with_items: "{{ git_repositories }}"
+
+- name: create the repositories
+  command: git --bare init /home/{{ git_user }}/{{ item }}
+  with_items: "{{ git_repositories }}"
+
+- name: set the user '{{ git_user }}' as owner
+  file:
+    path: /home/{{ git_user }}/{{ item }}
+    state: directory
+    owner: "{{ git_user }}"
+    group: "{{ git_group }}"
+    recurse: yes
+  with_items: "{{ git_repositories }}"

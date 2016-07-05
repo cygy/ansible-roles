@@ -1,0 +1,6 @@
+---
+- name: ensure that the latest '{{ git_pkg_name }}' package is installed
+  apt:
+    pkg: "{{ git_pkg_name }}"
+    state: latest
+    update_cache: yes

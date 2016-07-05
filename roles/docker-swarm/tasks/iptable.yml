@@ -1,0 +1,20 @@
+---
+- name: allow TCP connections
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    comment: "from ansible"
+  with_items: "{{ docker_tcp_ports }}"
+
+- name: allow UDP connections
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: udp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    comment: "from ansible"
+  with_items: "{{ docker_udp_ports }}"

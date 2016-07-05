@@ -1,0 +1,16 @@
+---
+rsync_pkg_name: rsync
+backup_user_ssh_key_bits: 4096
+backup_user: backup
+backup_hosts:
+- host: localhost
+  known_host_ssh_key: ""
+  tasks:
+  - user: root
+    directory: /data/
+    schedule:
+      weekday: "*"
+      month: "*"
+      day: "*"
+      hour: 5
+      minute: 0

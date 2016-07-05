@@ -1,0 +1,6 @@
+---
+- name: copy public key to hosts
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ lookup('file', 'keys/users/backup/id_rsa.pub') }}"
+  with_items: "{{ backedup_users }}"

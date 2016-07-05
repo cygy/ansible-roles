@@ -1,0 +1,9 @@
+---
+- name: allow SSH connections
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: tcp
+    destination_port: 22
+    jump: ACCEPT
+    comment: "from ansible"
