@@ -33,7 +33,7 @@
     update_cache: yes
     upgrade: dist
 
-- name: ensure that the latest 'docker-engine' package is installed
+- name: ensure that the latest '{{ docker_pkg_name }}' package is installed
   apt:
     pkg: "{{ docker_pkg_name }}"
     state: latest
@@ -63,6 +63,11 @@
 - name: ensure that the latest 'docker-py' package is installed
   pip:
     name: docker-py==1.1.0
+
+# Install docker-compose
+- name: ensure that 'docker-compose' is installed
+  pip:
+    name: docker-compose
 
 # Start the docker daemon.
 - name: restart docker
