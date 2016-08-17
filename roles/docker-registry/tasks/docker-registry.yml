@@ -1,0 +1,28 @@
+---
+- name: create the storage directory
+  file:
+    path: "{{ docker_registry_storage_path }}"
+    state: directory
+    mode: 0775
+
+- name: pull the docker registry image
+  docker:
+    image: "registry:2"
+    name: "docker-registry"
+    detach: true
+    pull: always
+    restart_policy: always
+    expose:
+    - 5000
+    ports:
+    - "{{ docker_registry_port }}:5000"
+    volumes:
+    - "{{ docker_registry_storage_path }}:/var/lib/registry"
+    - "{{ docker_registry_certs_directory_path }}:/certs"
+    - "{{ docker_registry_htpasswd_path }}:/auth/htpasswd"
+    env:
+      REGISTRY_HTTP_TLS_CERTIFICATE: "/certs/{{ docker_registry_cert_file_name }}"
+      REGISTRY_HTTP_TLS_KEY: "/certs/{{ docker_registry_key_file_name }}"
+      REGISTRY_AUTH: "htpasswd"
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+      REGISTRY_AUTH_HTPASSWD_PATH: "/auth/htpasswd"
