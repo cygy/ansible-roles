@@ -1,0 +1,9 @@
+---
+- name: create the '{{ certbot_certs_path }}' directory
+  file:
+    path: "{{ certbot_certs_path }}"
+    state: directory
+    mode: 0775
+
+- name: generate the certificates
+  command: certbot certonly --standalone --agree-tos --cert-path {{ certbot_certs_path }} --key-path {{ certbot_certs_path }} --fullchain-path {{ certbot_certs_path }} --chain-path {{ certbot_certs_path }} -n -m {{ certbot_email_address }} -d {{ certbot_domain }}

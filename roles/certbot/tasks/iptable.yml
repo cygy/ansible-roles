@@ -1,0 +1,11 @@
+---
+- name: allow HTTPS daemon connections
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    comment: "from ansible"
+  with_items:
+  - 443

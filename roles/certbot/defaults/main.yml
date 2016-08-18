@@ -1,0 +1,5 @@
+---
+certbot_email_address:
+certbot_domain:
+certbot_certs_path: /certs
+certbot_pkg_name: certbot

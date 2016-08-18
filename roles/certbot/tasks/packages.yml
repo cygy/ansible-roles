@@ -1,0 +1,18 @@
+---
+- name: copy 'backport.list' file
+  copy:
+    src: files/backport.list
+    dest: /etc/apt/sources.list.d/backport.list
+    backup: yes
+
+- name: update the system
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: ensure that the latest '{{ certbot_pkg_name }}' package is installed
+  apt:
+    pkg: "{{ certbot_pkg_name }}"
+    state: latest
+    update_cache: yes
+    default_release: jessie-backports
