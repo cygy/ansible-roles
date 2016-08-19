@@ -3,5 +3,6 @@ docker_registry_storage_path: /data
 docker_registry_certs_directory_path: /certs
 docker_registry_cert_file_name: domain.crt
 docker_registry_key_file_name: domain.key
-docker_registry_htpasswd_path: /auth/htpasswd
+docker_registry_htpasswd_directory_path: /auth
+docker_registry_htpasswd_file_name: htpasswd
 docker_registry_port: 5000

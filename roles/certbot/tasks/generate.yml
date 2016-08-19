@@ -1,9 +1,15 @@
 ---
+- name: generate the certificates
+  command: certbot certonly --standalone --agree-tos -n -m {{ certbot_email_address }} -d {{ certbot_domain }}
+
 - name: create the '{{ certbot_certs_path }}' directory
   file:
     path: "{{ certbot_certs_path }}"
     state: directory
     mode: 0775
 
-- name: generate the certificates
-  command: certbot certonly --standalone --agree-tos --cert-path {{ certbot_certs_path }} --key-path {{ certbot_certs_path }} --fullchain-path {{ certbot_certs_path }} --chain-path {{ certbot_certs_path }} -n -m {{ certbot_email_address }} -d {{ certbot_domain }}
+- name: copy the certificate files to the directory '{{ certbot_certs_path }}'
+  command: "cp {{ certbot_original_certs_path }}/{{ certbot_domain }}/{{ item }} {{ certbot_certs_path }}/{{ item }}"
+  with_items:
+  - "{{ certbot_cert_file_name }}"
+  - "{{ certbot_key_file_name }}"

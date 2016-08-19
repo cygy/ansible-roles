@@ -2,4 +2,7 @@
 certbot_email_address:
 certbot_domain:
 certbot_certs_path: /certs
+certbot_original_certs_path: /etc/letsencrypt/live
+certbot_cert_file_name: fullchain.pem
+certbot_key_file_name: privkey.pem
 certbot_pkg_name: certbot
