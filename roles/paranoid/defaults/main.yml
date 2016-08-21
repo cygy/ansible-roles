@@ -4,6 +4,7 @@ paranoid_allowed_udp_ports:
 paranoid_allowed_tcp_ports:
 paranoid_fail2ban_pkg_name: fail2ban
 paranoid_fail2ban_service_name: fail2ban
+paranoid_disable_root_password: 1
 
 #paranoid_fail2ban:
 #  default:
