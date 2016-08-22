@@ -7,9 +7,11 @@
     path: "{{ certbot_certs_path }}"
     state: directory
     mode: 0775
+  when: certbot_certs_path
 
 - name: copy the certificate files to the directory '{{ certbot_certs_path }}'
   command: "cp {{ certbot_original_certs_path }}/{{ certbot_domain }}/{{ item }} {{ certbot_certs_path }}/{{ item }}"
   with_items:
   - "{{ certbot_cert_file_name }}"
   - "{{ certbot_key_file_name }}"
+  when: certbot_certs_path
