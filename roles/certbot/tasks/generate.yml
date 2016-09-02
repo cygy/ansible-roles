@@ -15,6 +15,6 @@
   when: certbot_certs_path is defined
 
 - name: copy the certificate files to the directory '{{ certbot_certs_path }}'
-  command: "cp -R {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}/{{ item }} {{ certbot_certs_path }}/{{ item }}"
+  command: "cp {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}/{{ item }} {{ certbot_certs_path }}/{{ item }}"
   with_items: "{{ contents.stdout_lines }}"
   when: certbot_certs_path is defined

@@ -7,7 +7,7 @@
 
 - name: copy the file '{{ docker_registry_htpasswd_file_name }}'
   copy:
-    src: ../../files/{{ docker_registry_htpasswd_file_name }}
+    src: ../../files/docker-registry/{{ docker_registry_htpasswd_file_name }}
     dest: "{{ docker_registry_htpasswd_directory_path }}/{{ docker_registry_htpasswd_file_name }}"
     backup: yes
 
