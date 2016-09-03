@@ -1,0 +1,14 @@
+---
+- name: allow SMTP/POP3/IMAP connections
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    comment: "from ansible"
+  with_items:
+  - "{{ mailserver_smtp_port }}"
+  - "{{ mailserver_imap_port }}"
+  - "{{ mailserver_msm_port }}"
+  - "{{ mailserver_simap_port }}"

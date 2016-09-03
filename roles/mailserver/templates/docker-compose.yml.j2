@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  mail:
+    image: tvial/docker-mailserver:latest
+    hostname: {{ mailserver_hostname }}
+    domainname: {{ mailserver_domainname }}
+    restart: unless-stopped
+    container_name: {{ mailserver_container_name }}
+    environment:
+    - SSL_TYPE=letsencrypt
+    ports:
+    - "{{ mailserver_smtp_port }}:25"
+    - "{{ mailserver_imap_port }}:143"
+    - "{{ mailserver_msm_port }}:587"
+    - "{{ mailserver_simap_port }}:993"
+    volumes:
+    - {{ mailserver_mail_path }}:/var/mail
+    - {{ mailserver_config_path }}:/tmp/docker-mailserver/
+    - {{ mailserver_tls_path }}:/etc/letsencrypt

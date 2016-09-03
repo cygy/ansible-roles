@@ -1,0 +1,14 @@
+---
+mailserver_hostname:
+mailserver_domainname:
+mailserver_container_name: mail
+mailserver_config_path: /config
+mailserver_mail_path: /var/mail
+mailserver_tls_path: /etc/letsencrypt
+mailserver_docker_compose_file_path: /data
+mailserver_postfix_accounts_config_file_name: postfix-accounts.cf
+mailserver_postfix_virtual_config_file_name: postfix-virtual.cf
+mailserver_smtp_port: 25
+mailserver_imap_port: 143
+mailserver_msm_port: 587
+mailserver_simap_port: 993

@@ -1,0 +1,41 @@
+---
+- name: create the directory '{{ mailserver_config_path }}'
+  file:
+    path: "{{ mailserver_config_path }}"
+    state: directory
+    mode: 0775
+
+- name: copy the configuration files
+  copy:
+    src: files/mailserver/{{ item }}
+    dest: "{{ mailserver_config_path }}/{{ item }}"
+    backup: yes
+  with_items:
+  - "{{ mailserver_postfix_accounts_config_file_name }}"
+  - "{{ mailserver_postfix_virtual_config_file_name }}"
+
+- name: create the directory '{{ mailserver_docker_compose_file_path }}'
+  file:
+    path: "{{ mailserver_docker_compose_file_path }}"
+    state: directory
+    mode: 0775
+
+- name: copy docker compose file to '{{ mailserver_docker_compose_file_path }}/docker-compose.yml'
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ mailserver_docker_compose_file_path }}/docker-compose.yml"
+    force: yes
+
+- name: start the mail service
+  command: docker-compose -f {{ mailserver_docker_compose_file_path }}/docker-compose.yml up -d mail
+
+- name: generate DKIM signature
+  command: docker run --rm -v {{ mailserver_config_path }}:/tmp/docker-mailserver -ti tvial/docker-mailserver:latest generate-dkim-config
+
+- name: get the DKIM signature
+  command: cat {{ mailserver_config_path }}/opendkim/keys/{{ mailserver_domainname }}/mail.txt
+  register: dkim_signature
+
+- name: DKIM signature to add to your DNS zone
+  debug:
+    var: dkim_signature.stdout
