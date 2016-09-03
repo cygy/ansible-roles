@@ -26,6 +26,9 @@
     dest: "{{ mailserver_docker_compose_file_path }}/docker-compose.yml"
     force: yes
 
+- name: restart the mail service
+  command: docker-compose -f {{ mailserver_docker_compose_file_path }}/docker-compose.yml restart mail
+
 - name: start the mail service
   command: docker-compose -f {{ mailserver_docker_compose_file_path }}/docker-compose.yml up -d mail
 
