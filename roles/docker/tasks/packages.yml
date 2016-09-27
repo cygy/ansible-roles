@@ -22,11 +22,19 @@
     keyserver: "{{ docker_apt_key_server }}"
     id: "{{ docker_apt_key_id }}"
 
-- name: copy 'docker.list' file
+- name: copy 'docker.list' file (main)
   copy:
-    src: files/docker.list
-    dest: /etc/apt/sources.list.d/docker.list
+    src: files/main.list
+    dest: "{{ docker_apt_source_path }}"
     backup: yes
+  when: docker_install_experimental_version == 0
+
+- name: copy 'docker.list' file (experimental)
+  copy:
+    src: files/experimental.list
+    dest: "{{ docker_apt_source_path }}"
+    backup: yes
+  when: docker_install_experimental_version == 1
 
 - name: update the system
   apt:
@@ -65,9 +73,20 @@
     name: docker-py==1.1.0
 
 # Install docker-compose
+- name: get the OS name
+  command: uname -s
+  register: unames
+
+- name: get the OS version
+  command: uname -m
+  register: unamem
+
 - name: ensure that 'docker-compose' is installed
-  pip:
-    name: docker-compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ unames.stdout }}-{{ unamem.stdout }}"
+    dest: "{{ docker_compose_path }}"
+    group: "{{ docker_group }}"
+    mode: u=rwx,g=rx,o=rx
 
 # Start the docker daemon.
 - name: restart docker
