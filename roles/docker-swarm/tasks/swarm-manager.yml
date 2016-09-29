@@ -1,6 +1,6 @@
 ---
 - name: init the swarm
-  command: docker swarm init --listen-addr {{ docker_swarm_manager_ip }}:{{ docker_swarm_manager_port }} --secret {{ docker_swarm_secret }}
+  command: docker swarm init --listen-addr {{ docker_swarm_manager_ip }}:{{ docker_swarm_manager_port }}
   register: docker_swarm_init_result
   failed_when: "docker_swarm_init_result.rc > 1"
   changed_when: "docker_swarm_init_result.rc == 0"

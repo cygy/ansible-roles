@@ -1,13 +1,13 @@
 ---
 - name: join the swarm (manager)
-  command: docker swarm join --secret {{ docker_swarm_secret }} --manager {{ docker_swarm_manager_ip }}:{{ docker_swarm_manager_port }}
+  command: docker swarm join --token xxx {{ docker_swarm_manager_ip }}:{{ docker_swarm_manager_port }}
   register: docker_swarm_init_result
   failed_when: "docker_swarm_init_result.rc > 1"
   changed_when: "docker_swarm_init_result.rc == 0"
   when: docker_swarm_is_main_manager == 0 and docker_swarm_is_manager == 1
 
 - name: join the swarm (no manager)
-  command: docker swarm join --secret {{ docker_swarm_secret }} {{ docker_swarm_manager_ip }}:{{ docker_swarm_manager_port }}
+  command: docker swarm join --token xxx {{ docker_swarm_manager_ip }}:{{ docker_swarm_manager_port }}
   register: docker_swarm_init_result
   failed_when: "docker_swarm_init_result.rc > 1"
   changed_when: "docker_swarm_init_result.rc == 0"
