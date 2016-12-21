@@ -9,11 +9,14 @@ services:
     container_name: {{ mailserver_container_name }}
     environment:
     - SSL_TYPE=letsencrypt
+    - ENABLE_POP3=1
     ports:
     - "{{ mailserver_smtp_port }}:25"
+    - "{{ mailserver_pop3_port }}:110"
     - "{{ mailserver_imap_port }}:143"
     - "{{ mailserver_msm_port }}:587"
     - "{{ mailserver_simap_port }}:993"
+    - "{{ mailserver_spop3_port }}:995"
     volumes:
     - {{ mailserver_mail_path }}:/var/mail
     - {{ mailserver_config_path }}:/tmp/docker-mailserver/
