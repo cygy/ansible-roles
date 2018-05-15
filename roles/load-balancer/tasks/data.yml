@@ -1,0 +1,10 @@
+---
+- name: copy the scripts directories
+  copy:
+    src: files/load-balancer/scripts
+    dest: "{{ load_balancer_scripts_directory_dest }}/scripts/"
+
+- name: copy the configuration file
+  copy:
+    src: "files/load-balancer/config/{{ load_balancer_configuration_file_name_src }}"
+    dest: "{{ load_balancer_configiration_file_dest }}"

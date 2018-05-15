@@ -1,0 +1,4 @@
+---
+load_balancer_scripts_directory_dest: /nginx/
+load_balancer_configuration_file_name_src: nginx.conf
+load_balancer_configiration_file_dest: ~/nginx.conf
