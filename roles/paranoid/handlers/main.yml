@@ -2,5 +2,5 @@
 - name: restart '{{ paranoid_fail2ban_service_name }}' service
   service:
     name: "{{ paranoid_fail2ban_service_name }}"
-    state: restarted
+    state: "restarted"
     enabled: yes
