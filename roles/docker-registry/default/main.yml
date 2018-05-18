@@ -6,3 +6,5 @@ docker_registry_key_file_name: domain.key
 docker_registry_htpasswd_directory_path: /auth
 docker_registry_htpasswd_file_name: htpasswd
 docker_registry_port: 5000
+docker_registry_files_owner: user
+docker_registry_files_group: group

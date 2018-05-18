@@ -3,24 +3,35 @@
   file:
     path: "{{ docker_registry_storage_path }}"
     state: directory
+    owner: "{{ docker_registry_files_owner }}"
+    group: "{{ docker_registry_files_group }}"
+    mode: 0775
+
+- name: create the directory containing the htpasswd file
+  file:
+    path: "{{ docker_registry_htpasswd_directory_path }}"
+    state: directory
+    owner: "{{ docker_registry_files_owner }}"
+    group: "{{ docker_registry_files_group }}"
     mode: 0775
 
 - name: copy the file '{{ docker_registry_htpasswd_file_name }}'
   copy:
-    src: ../../files/docker-registry/{{ docker_registry_htpasswd_file_name }}
+    src: files/docker-registry/{{ docker_registry_htpasswd_file_name }}
     dest: "{{ docker_registry_htpasswd_directory_path }}/{{ docker_registry_htpasswd_file_name }}"
+    owner: "{{ docker_registry_files_owner }}"
+    group: "{{ docker_registry_files_group }}"
     backup: yes
 
-- name: pull the docker registry image
-  docker:
+- name: start the docker registry container
+  docker_container:
     image: "registry:2"
     name: "docker-registry"
-    detach: true
-    pull: always
-    restart_policy: always
-    expose:
+    detach: yes
+    restart_policy: "always"
+    exposed_ports:
     - 5000
-    ports:
+    published_ports:
     - "{{ docker_registry_port }}:5000"
     volumes:
     - "{{ docker_registry_storage_path }}:/var/lib/registry"
