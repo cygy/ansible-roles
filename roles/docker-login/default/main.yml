@@ -1,0 +1,4 @@
+---
+docker_login_registry: "registry.docker.com:5000"
+docker_login_username: username
+docker_login_password: password
