@@ -1,0 +1,4 @@
+---
+- name: create the docker network 'proxy'
+  docker_network:
+    name: proxy

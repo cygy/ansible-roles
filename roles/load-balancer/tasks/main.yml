@@ -1,2 +1,4 @@
 ---
 - include: data.yml
+- include: docker-network.yml
+- include: docker-container.yml

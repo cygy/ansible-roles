@@ -5,7 +5,7 @@
     state: directory
     owner: "{{ docker_registry_files_owner }}"
     group: "{{ docker_registry_files_group }}"
-    mode: 0775
+    mode: 0664
 
 - name: create the directory containing the htpasswd file
   file:
@@ -13,7 +13,7 @@
     state: directory
     owner: "{{ docker_registry_files_owner }}"
     group: "{{ docker_registry_files_group }}"
-    mode: 0775
+    mode: 0664
 
 - name: copy the file '{{ docker_registry_htpasswd_file_name }}'
   copy:
