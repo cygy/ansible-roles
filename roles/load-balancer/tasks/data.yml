@@ -1,4 +1,11 @@
 ---
+- name: create the directory of the data
+  file:
+    path: "{{ load_balancer_configuration_file_directory }}"
+    state: directory
+    owner: "{{ load_balancer_files_owner }}"
+    group: "{{ load_balancer_files_group }}"
+
 - name: copy the configuration file
   copy:
     src: "{{ load_balancer_configuration_file_src }}"

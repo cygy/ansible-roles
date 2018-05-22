@@ -17,4 +17,4 @@ docker_dependencies:
 docker_pkg_name: docker-engine
 docker_service_name: docker
 docker_compose_path: /usr/local/bin/docker-compose
-docker_compose_version: 1.8.1
+docker_compose_version: "1.21.0"

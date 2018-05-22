@@ -1,22 +1,5 @@
 ---
-- name: purge older repositories
-  apt:
-    pkg: "{{ item }}"
-    state: absent
-    purge: yes
-  with_items: "{{ docker_older_repositories }}"
-
-- name: update the system
-  apt:
-    update_cache: yes
-    upgrade: dist
-
-- name: install docker dependencies
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-  with_items: "{{ docker_dependencies }}"
-
+# Tasks to install the docker package.
 - name: add GPG key
   apt_key:
     keyserver: "{{ docker_apt_key_server }}"
@@ -41,6 +24,19 @@
     update_cache: yes
     upgrade: dist
 
+- name: ensure that the older repositories are uninstalled
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items: "{{ docker_older_repositories }}"
+
+- name: ensure that the latest dependent packages of '{{ docker_pkg_name }}' are installed
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  with_items: "{{ docker_dependencies }}"
+
 - name: ensure that the latest '{{ docker_pkg_name }}' package is installed
   apt:
     pkg: "{{ docker_pkg_name }}"
@@ -48,29 +44,28 @@
     update_cache: yes
 
 # Install the package dependencies for Ansible docker module.
-- name: ensure that the latest 'python' package is installed
+- name: ensure that the latest python packages are installed
   apt:
-    pkg: python
-    state: latest
+    pkg: "{{ item.name }}"
+    state:  "{{ item.state }}"
+  with_items:
+    - { name: python, state: latest }
+    - { name: python-setuptools, state: latest }
+    - { name: python-pip, state: absent }
 
-- name: ensure that the latest 'python-setuptools' package is installed
-  apt:
-    pkg: python-setuptools
-    state: latest
-
-- name: ensure that the 'python-pip' package is not installed
-  apt:
-    pkg: python-pip
-    state: absent
-
-- name: ensure that the latest 'pip' package is installed
+- name: ensure that the dependent packages are installed via easy_install
   easy_install:
-    name: pip
-    state: latest
+    name: "{{ item.name }}"
+    state:  "{{ item.state }}"
+  with_items:
+    - { name: pip, state: latest }
 
-- name: ensure that the 'docker-py' package is installed
+- name: ensure that the dependent packages are installed via pip
   pip:
-    name: docker-py==1.9.0
+    name: "{{ item.name }}"
+    state:  "{{ item.state }}"
+  with_items:
+    - { name: docker-py==1.9.0, state: present }
 
 # Install docker-compose
 - name: get the OS name
@@ -85,8 +80,9 @@
   get_url:
     url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ unames.stdout }}-{{ unamem.stdout }}"
     dest: "{{ docker_compose_path }}"
-    group: "{{ docker_group }}"
-    mode: u=rwx,g=rx,o=rx
+    owner: root
+    group: root
+    mode: "0755"
 
 # Start the docker daemon.
 - name: restart docker
