@@ -18,3 +18,6 @@
     - name: proxy
     labels:
       role: load-balancer
+
+- name: reload the load-balancer configuration
+  command: "docker kill -s HUP {{ load_balancer_container_name }}"
