@@ -11,8 +11,15 @@
     group: "{{ git_group }}"
     shell: /usr/bin/git-shell
 
-- name: set the ssh keys for the '{{ git_user }}' user
+#- name: set the ssh keys for the '{{ git_user }}' user
+#  authorized_key:
+#    user: "{{ git_user }}"
+#    exclusive: yes
+#    key: "{{ lookup('file', 'keys/users/{{ git_user }}.keys') }}"
+
+- name: set the ssh keys up
   authorized_key:
     user: "{{ git_user }}"
-    exclusive: yes
-    key: "{{ lookup('file', 'keys/users/git.keys') }}"
+    state: "{{ item.state }}"
+    key: "{{ lookup('file', '{{ item.path }}') }}"
+  with_items: "{{ git_ssh_key_paths }}"

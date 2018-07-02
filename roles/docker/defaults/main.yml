@@ -1,6 +1,10 @@
 ---
 docker_user: docker
 docker_user_id: 999
+docker_user_generate_ssh_key: false
+docker_user_ssh_key_bits: 4096
+docker_user_ssh_key_comment: docker_user
+docker_user_ssh_key_dest: docker
 docker_group: docker
 docker_group_id: 999
 docker_data_directory: /docker/data

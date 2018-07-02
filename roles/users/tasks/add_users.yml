@@ -5,6 +5,16 @@
     uid: "{{ item.uid }}"
     group: "{{ item.primary_group }}"
     groups: "{{ item.groups }}"
+    generate_ssh_key: "{{ item.generate_ssh_key }}"
+    ssh_key_bits: "{{ item.ssh_key_bits }}"
+    ssh_key_comment: "{{ item.ssh_key_comment }}"
+  with_items: "{{ users }}"
+
+- name: save the public keys
+  fetch:
+    src: /home/{{ item.name }}/.ssh/id_rsa.pub
+    dest: keys/remote/{{ item.ssh_key_dest }}.pub
+    flat: yes
   with_items: "{{ users }}"
 
 - name: set the ssh keys for the users

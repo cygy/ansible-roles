@@ -9,6 +9,15 @@
     name: "{{ docker_user }}"
     uid: "{{ docker_user_id }}"
     group: "{{ docker_group }}"
+    generate_ssh_key: "{{ docker_user_generate_ssh_key }}"
+    ssh_key_bits: "{{ docker_user_ssh_key_bits }}"
+    ssh_key_comment: "{{ docker_user_ssh_key_comment }}"
+
+- name: save the '{{ docker_user }}' user public key to '{{ docker_user_ssh_key_dest }}.pub'
+  fetch:
+    src: /home/{{ docker_user }}/.ssh/id_rsa.pub
+    dest: keys/remote/{{ docker_user_ssh_key_dest }}.pub
+    flat: yes
 
 - name: create the data directory
   file:

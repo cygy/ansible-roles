@@ -9,13 +9,13 @@
 - name: save the public keys (root user)
   fetch:
     src: /root/.ssh/id_rsa.pub
-    dest: keys/users/backup/
+    dest: keys/backup/
     flat: yes
   when: backup_user == "root"
 
 - name: save the public keys (no root user)
   fetch:
     src: /home/{{ backup_user }}/.ssh/id_rsa.pub
-    dest: keys/users/backup/
+    dest: keys/backup/
     flat: yes
   when: backup_user != "root"

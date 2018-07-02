@@ -20,4 +20,4 @@
       role: load-balancer
 
 - name: reload the load-balancer configuration
-  command: "docker kill -s HUP {{ load_balancer_container_name }}"
+  command: "docker restart {{ load_balancer_container_name }}"

@@ -32,13 +32,13 @@
 - name: start the mail service
   command: docker-compose -f {{ mailserver_docker_compose_file_path }}/docker-compose.yml up -d mail
 
-- name: generate DKIM signature
-  command: docker run --rm -v {{ mailserver_config_path }}:/tmp/docker-mailserver -ti tvial/docker-mailserver:latest generate-dkim-config
+#- name: generate DKIM signature
+#  command: docker run --rm -v {{ mailserver_config_path }}:/tmp/docker-mailserver -ti tvial/docker-mailserver:latest generate-dkim-config
 
-- name: get the DKIM signature
-  command: cat {{ mailserver_config_path }}/opendkim/keys/{{ mailserver_domainname }}/mail.txt
-  register: dkim_signature
+#- name: get the DKIM signature
+#  command: cat {{ mailserver_config_path }}/opendkim/keys/{{ mailserver_domainname }}/mail.txt
+#  register: dkim_signature
 
-- name: DKIM signature to add to your DNS zone
-  debug:
-    var: dkim_signature.stdout
+#- name: DKIM signature to add to your DNS zone
+#  debug:
+#    var: dkim_signature.stdout

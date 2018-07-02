@@ -9,3 +9,7 @@ users:
     primary_group: group
     groups: group
     aliases: ""
+    generate_ssh_key: false
+    ssh_key_bits: 2048
+    ssh_key_comment: user.group
+    ssh_key_dest: user.group
