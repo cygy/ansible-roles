@@ -19,7 +19,7 @@
     dest: keys/remote/{{ docker_user_ssh_key_dest }}.pub
     flat: yes
 
-- name: create the data directory
+- name: create the data directory at '{{ docker_data_directory }}'
   file:
     path: "{{ docker_data_directory }}"
     state: directory
