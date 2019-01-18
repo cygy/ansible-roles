@@ -1,0 +1,17 @@
+---
+- name: start the 'cAdvisor' docker container
+  docker_container:
+    image: "google/cadvisor:latest"
+    name: "cadvisor"
+    detach: yes
+    restart_policy: "always"
+    exposed_ports:
+    - 8080
+    published_ports:
+    - "{{ docker_metrics_port }}:8080"
+    volumes:
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:ro"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
+    - "/dev/disk/:/dev/disk:ro"

@@ -1,0 +1,50 @@
+---
+- name: create the mysql storage directory
+  file:
+    path: "{{ blog_db_storage_path }}"
+    state: directory
+    owner: "{{ blog_files_owner }}"
+    group: "{{ blog_files_group }}"
+    mode: 0775
+
+- name: copy the 'initdb' files
+  copy:
+    src: "{{ blog_db_initdb_src }}"
+    dest: "{{ blog_db_initdb_dest }}"
+    owner: "{{ blog_files_owner }}"
+    group: "{{ blog_files_group }}"
+    mode: 0664
+
+- name: copy the 'www' files
+  synchronize:
+    src: "{{ blog_www_src }}"
+    dest: "{{ blog_www_dest }}"
+    group: false
+    owner: false
+    perms: false
+  when: blog_moving_files == true
+
+- name: change the owner of the 'www' folder
+  file:
+    path: "{{ blog_www_dest }}"
+    owner: "{{ blog_files_owner }}"
+    group: "{{ blog_files_group }}"
+    recurse: true
+  when: blog_moving_files == true
+
+- name: change the owner of the 'www/wp-content' folder
+  file:
+    path: "{{ blog_www_dest }}/wp-content"
+    owner: www-data
+    group: www-data
+    recurse: true
+  when: blog_moving_files == true
+
+- name: copy the docker compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ blog_docker_compose_file_dest }}"
+    owner: "{{ blog_files_owner }}"
+    group: "{{ blog_files_group }}"
+    mode: 0664
+    force: yes

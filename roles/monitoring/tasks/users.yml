@@ -1,0 +1,11 @@
+---
+- name: Ensure that the group 'grafana' exists
+  group:
+    name: grafana
+    gid: 472
+
+- name: Ensure that the user 'grafana' exists
+  user:
+    name: grafana
+    group: grafana
+    uid: 472

@@ -1,0 +1,21 @@
+global:
+  scrape_interval: {{ monitoring_prometheus_conf_scrape_interval }}
+  evaluation_interval: {{ monitoring_prometheus_conf_evaluation_interval }}
+  external_labels:
+    monitor: 'docker-monitor'
+
+rule_files:
+  - "targets.rules"
+  - "host.rules"
+  - "containers.rules"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']
+
+{% for host in monitoring_prometheus_monitored_hosts %}
+  - job_name: 'cadvisor {{ host.name }}'
+    static_configs:
+      - targets: ['{{ host.host }}:{{ host.port }}']
+{% endfor %}

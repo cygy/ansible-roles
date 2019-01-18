@@ -1,0 +1,3 @@
+---
+- name: create the docker containers
+  command: "docker-compose -f {{ blog_docker_compose_file_dest }} -p {{ blog_docker_web_container_name }} up -d"

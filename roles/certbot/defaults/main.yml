@@ -2,5 +2,6 @@
 certbot_email_address:
 certbot_domains:
 certbot_certs_path:
+certbot_certs_path_prefix: ""
 certbot_original_certs_path: /etc/letsencrypt/live
 certbot_pkg_name: certbot

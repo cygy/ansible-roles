@@ -1,0 +1,39 @@
+version: '2'
+services:
+  web:
+    image: {{ blog_docker_web_image_name }}
+    container_name: {{ blog_docker_web_container_name }}
+    networks:
+    - {{ blog_docker_backend_network_name }}
+    - {{ blog_docker_proxy_network_name }}
+    volumes:
+    - {{ blog_www_dest }}/wp-content:/var/www/html/wp-content
+    environment:
+      WORDPRESS_DB_USER: {{ blog_db_user }}
+      WORDPRESS_DB_PASSWORD: {{ blog_db_password }}
+      WORDPRESS_DB_NAME: {{ blog_db_database }}
+    depends_on:
+    - mysql
+    restart: always
+    labels:
+      role: web
+  mysql:
+    image: {{ blog_docker_db_image_name }}
+    container_name: {{ blog_docker_db_container_name }}
+    networks:
+    - {{ blog_docker_backend_network_name }}
+    volumes:
+    - {{ blog_db_storage_path }}:/var/lib/mysql
+    - {{ blog_db_initdb_dest }}:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ blog_db_root_password }}
+      MYSQL_USER: {{ blog_db_user }}
+      MYSQL_PASSWORD: {{ blog_db_password }}
+      MYSQL_DATABASE: {{ blog_db_database }}
+    restart: always
+    labels:
+      role: database
+networks:
+  {{ blog_docker_backend_network_name }}:
+  {{ blog_docker_proxy_network_name }}:
+    external: true

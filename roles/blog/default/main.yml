@@ -1,0 +1,20 @@
+---
+blog_files_owner: user
+blog_files_group: group
+blog_db_storage_path: /mysql
+blog_moving_files: false
+blog_www_src: /www
+blog_www_dest: /www
+blog_db_initdb_src: /mysql-initdb.d
+blog_db_initdb_dest: /mysql-initdb.d
+blog_docker_compose_file_dest: /docker-compose.yml
+blog_docker_web_image_name: "wordpress:latest"
+blog_docker_web_container_name: web
+blog_docker_db_image_name: mysql:5.7
+blog_docker_db_container_name: db
+blog_docker_backend_network_name: backend
+blog_docker_proxy_network_name: proxy
+blog_db_root_password: tomodify
+blog_db_user: username
+blog_db_password: tomodify
+blog_db_database: database

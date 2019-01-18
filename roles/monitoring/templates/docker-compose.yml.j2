@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  prometheus:
+    image: {{ monitoring_docker_prometheus_image_name }}
+    container_name: {{ monitoring_docker_prometheus_container_name }}
+    networks:
+    - {{ monitoring_docker_network_name }}
+    volumes:
+    - {{ monitoring_prometheus_conf_path }}:/etc/prometheus/:Z
+    - {{ monitoring_prometheus_data_path }}:/prometheus:Z
+    command:
+    - '--config.file=/etc/prometheus/prometheus.yml'
+    - '--storage.tsdb.path=/prometheus'
+    - '--web.console.libraries=/etc/prometheus/console_libraries'
+    - '--web.console.templates=/etc/prometheus/consoles'
+    - '--storage.tsdb.retention=200h'
+    expose:
+    - 9090
+    ports:
+    - "{{ monitoring_prometheus_port }}:9090"
+    restart: on-failure
+    labels:
+      role: prometheus
+
+  grafana:
+    image: {{ monitoring_docker_grafana_image_name }}
+    container_name: {{ monitoring_docker_grafana_container_name }}
+    networks:
+    - {{ monitoring_docker_network_name }}
+    volumes:
+    - {{ monitoring_grafana_data_path }}:/var/lib/grafana
+    expose:
+    - 3000
+    ports:
+    - "{{ monitoring_grafana_port }}:3000"
+    restart: on-failure
+    labels:
+      role: grafana
+
+networks:
+  {{ monitoring_docker_network_name }}:

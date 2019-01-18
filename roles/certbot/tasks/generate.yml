@@ -9,12 +9,12 @@
     mode: 0775
   when: certbot_certs_path is defined
 
-- name: get the contents of the directory '{{ certbot_original_certs_path }}/{{ certbot_domains[0] }}'
-  command: ls {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}
+- name: get the contents of the directory '{{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}'
+  command: ls {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}
   register: contents
   when: certbot_certs_path is defined
 
 - name: copy the certificate files to the directory '{{ certbot_certs_path }}'
-  command: "cp {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}/{{ item }} {{ certbot_certs_path }}/{{ item }}"
+  command: "cp {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}/{{ item }} {{ certbot_certs_path }}/{{ item }}"
   with_items: "{{ contents.stdout_lines }}"
   when: certbot_certs_path is defined

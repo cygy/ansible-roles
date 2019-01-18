@@ -1,0 +1,10 @@
+---
+- name: allow TCP connections
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ docker_metrics_port }}"
+    jump: ACCEPT
+    comment: "from ansible"
+    

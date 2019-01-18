@@ -1,0 +1,42 @@
+---
+- name: create the prometheus configuration directory at '{{ monitoring_prometheus_conf_path }}'
+  file:
+    path: "{{ monitoring_prometheus_conf_path }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0775
+
+- name: copy the prometheus configuration file at '{{ monitoring_prometheus_conf_path }}/prometheus.yml'
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ monitoring_prometheus_conf_path }}/prometheus.yml"
+    owner: nobody
+    group: nogroup
+    mode: 0664
+    force: yes
+
+- name: create the prometheus data directory at '{{ monitoring_prometheus_data_path }}'
+  file:
+    path: "{{ monitoring_prometheus_data_path }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0775
+
+- name: create the grafana data directory at '{{ monitoring_grafana_data_path }}'
+  file:
+    path: "{{ monitoring_grafana_data_path }}"
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: 0775
+
+- name: copy the docker compose file at '{{ monitoring_docker_compose_file_dest }}'
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ monitoring_docker_compose_file_dest }}"
+    owner: "{{ monitoring_files_owner }}"
+    group: "{{ monitoring_files_group }}"
+    mode: 0664
+    force: yes
