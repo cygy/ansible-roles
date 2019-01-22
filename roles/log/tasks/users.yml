@@ -1,0 +1,5 @@
+---
+- name: Ensure that the user 'elasticsearch' exists
+  user:
+    name: elasticsearch
+    uid: 1000

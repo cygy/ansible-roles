@@ -1,0 +1,82 @@
+version: '3'
+
+services:
+  mongodb:
+    image: {{ log_docker_mongodb_image_name }}
+    container_name: {{ log_docker_mongodb_container_name }}
+    networks:
+    - {{ log_docker_network_name }}
+    volumes:
+    - {{ log_mongodb_data_path }}:/data/db
+    restart: always
+    labels:
+      role: database
+      
+  elasticsearch:
+    image: {{ log_docker_elasticsearch_image_name }}
+    container_name: {{ log_docker_elasticsearch_container_name }}
+    networks:
+    - {{ log_docker_network_name }}
+    volumes:
+    - {{ log_elasticsearch_data_path }}:/usr/share/elasticsearch/data
+    environment:
+    - http.host=0.0.0.0
+    - transport.host=localhost
+    - network.host=0.0.0.0
+    # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/security-settings.html#general-security-settings
+    - xpack.security.enabled=false
+    - xpack.watcher.enabled=false
+    - xpack.monitoring.enabled=false
+    - xpack.security.audit.enabled=false
+    - xpack.ml.enabled=false
+    - xpack.graph.enabled=false
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          memory: {{ log_docker_elasticsearch_container_mem_limit }}
+    restart: always
+    labels:
+      role: elasticsearch
+    
+  graylog:
+    image: {{ log_docker_graylog_image_name }}
+    container_name: {{ log_docker_graylog_container_name }}
+    networks:
+    - {{ log_docker_network_name }}
+    - {{ log_docker_proxy_network_name }}
+    volumes:
+    - {{ log_graylog_journal_path }}:/usr/share/graylog/data/journal
+    environment:
+    - GRAYLOG_PASSWORD_SECRET={{ log_graylog_password_secret }}
+    - GRAYLOG_ROOT_PASSWORD_SHA2={{ log_graylog_root_password_sha2 }}
+    - GRAYLOG_WEB_ENDPOINT_URI={{ log_graylog_web_endpoint_uri }}
+    links:
+    - mongodb:mongo
+    - elasticsearch
+    depends_on:
+    - mongodb
+    - elasticsearch
+    expose:
+    - 9000
+    ports:
+    # Syslog TCP
+    - "{{ log_graylog_syslog_tcp_port }}:514"
+    # Syslog UDP
+    - "{{ log_graylog_syslog_udp_port }}:514/udp"
+    # GELF TCP
+    - "{{ log_graylog_gelf_tcp_port }}:12201"
+    # GELF UDP
+    - "{{ log_graylog_gelf_udp_port }}:12201/udp"
+    restart: always
+    labels:
+      role: logs
+
+networks:
+  {{ log_docker_network_name }}:
+  {{ log_docker_proxy_network_name }}:
+    external: true

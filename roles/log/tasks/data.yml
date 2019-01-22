@@ -1,0 +1,33 @@
+---
+- name: create the mongodb data directory at '{{ log_mongodb_data_path }}'
+  file:
+    path: "{{ log_mongodb_data_path }}"
+    state: directory
+    owner: "{{ log_files_owner }}"
+    group: "{{ log_files_group }}"
+    mode: 0775
+
+- name: create the elasticsearch data directory at '{{ log_elasticsearch_data_path }}'
+  file:
+    path: "{{ log_elasticsearch_data_path }}"
+    state: directory
+    owner: elasticsearch
+    group: "{{ log_files_group }}"
+    mode: 0775
+
+- name: create the graylog journal directory at '{{ log_graylog_journal_path }}'
+  file:
+    path: "{{ log_graylog_journal_path }}"
+    state: directory
+    owner: "{{ log_files_owner }}"
+    group: "{{ log_files_group }}"
+    mode: 0775
+
+- name: copy the docker compose file at '{{ log_docker_compose_file_dest }}'
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ log_docker_compose_file_dest }}"
+    owner: "{{ log_files_owner }}"
+    group: "{{ log_files_group }}"
+    mode: 0664
+    force: yes

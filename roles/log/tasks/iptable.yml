@@ -1,0 +1,36 @@
+---
+- name: allow TCP connections for the graylog Syslog
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ log_graylog_syslog_tcp_port }}"
+    jump: ACCEPT
+    comment: "from ansible"
+
+- name: allow UDP connections for the graylog Syslog
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: udp
+    destination_port: "{{ log_graylog_syslog_udp_port }}"
+    jump: ACCEPT
+    comment: "from ansible"
+
+- name: allow TCP connections for the graylog GELF
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ log_graylog_gelf_tcp_port }}"
+    jump: ACCEPT
+    comment: "from ansible"
+
+- name: allow UDP connections for the graylog GELF
+  iptables:
+    table: filter
+    chain: INPUT
+    protocol: udp
+    destination_port: "{{ log_graylog_gelf_udp_port }}"
+    jump: ACCEPT
+    comment: "from ansible"
