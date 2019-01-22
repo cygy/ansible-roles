@@ -30,6 +30,13 @@ services:
     - {{ monitoring_docker_proxy_network_name }}
     volumes:
     - {{ monitoring_grafana_data_path }}:/var/lib/grafana
+    environment:
+    - GF_SMTP_ENABLED={{ monitoring_docker_grafana_smtp_enabled }}
+    - GF_SMTP_HOST={{ monitoring_docker_grafana_smtp_host }}
+    - GF_SMTP_USER={{ monitoring_docker_grafana_smtp_user }}
+    - GF_SMTP_PASSWORD={{ monitoring_docker_grafana_smtp_password }}
+    - GF_SMTP_FROM_ADDRESS={{ monitoring_docker_grafana_smtp_from_address }}
+    - GF_SMTP_FROM_NAME={{ monitoring_docker_grafana_smtp_from_name }}
     expose:
     - 3000
     restart: always

@@ -13,5 +13,11 @@ monitoring_prometheus_monitored_hosts:
 monitoring_docker_grafana_image_name: grafana/grafana:5.4.3
 monitoring_docker_grafana_container_name: grafana
 monitoring_grafana_data_path: /grafana
+monitoring_docker_grafana_smtp_enabled: false
+monitoring_docker_grafana_smtp_host: ""
+monitoring_docker_grafana_smtp_user: ""
+monitoring_docker_grafana_smtp_password: ""
+monitoring_docker_grafana_smtp_from_address: ""
+monitoring_docker_grafana_smtp_from_name: ""
 monitoring_files_owner: user
 monitoring_files_group: group
