@@ -23,6 +23,14 @@
     group: "{{ log_files_group }}"
     mode: 0775
 
+- name: create the graylog trusted clients directory at '{{ log_graylog_trusted_clients_path }}'
+  file:
+    path: "{{ log_graylog_trusted_clients_path }}"
+    state: directory
+    owner: "{{ log_files_owner }}"
+    group: "{{ log_files_group }}"
+    mode: 0775
+
 - name: copy the docker compose file at '{{ log_docker_compose_file_dest }}'
   template:
     src: docker-compose.yml.j2

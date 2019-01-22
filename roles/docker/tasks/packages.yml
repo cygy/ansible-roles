@@ -1,71 +1,42 @@
 ---
 # Tasks to install the docker package.
-- name: add GPG key
-  apt_key:
-    keyserver: "{{ docker_apt_key_server }}"
-    id: "{{ docker_apt_key_id }}"
-
-- name: copy 'docker.list' file (main)
-  copy:
-    src: files/main.list
-    dest: "{{ docker_apt_source_path }}"
-    backup: yes
-  when: docker_install_experimental_version == 0
-
-- name: copy 'docker.list' file (experimental)
-  copy:
-    src: files/experimental.list
-    dest: "{{ docker_apt_source_path }}"
-    backup: yes
-  when: docker_install_experimental_version == 1
-
-- name: update the system
-  apt:
-    update_cache: yes
-    upgrade: dist
+- name: delete the old 'docker.list' file
+  file:
+    path: /etc/apt/sources.list.d/docker.list
+    state: absent
 
 - name: ensure that the older repositories are uninstalled
   apt:
-    pkg: "{{ item }}"
+    pkg: "{{ docker_older_repositories }}"
     state: absent
     purge: yes
-  with_items: "{{ docker_older_repositories }}"
+    update_cache: yes
 
-- name: ensure that the latest dependent packages of '{{ docker_pkg_name }}' are installed
+- name: ensure that the latest dependent packages are installed
   apt:
-    pkg: "{{ item }}"
+    pkg: "{{ docker_dependencies }}"
     state: latest
-  with_items: "{{ docker_dependencies }}"
+    update_cache: yes
+
+- name: add GPG key from '{{ docker_apt_key_server }}'
+  apt_key:
+    url: "{{ docker_apt_key_server }}"
+    id: "{{ docker_apt_key_id }}"
+    
+- name: get the release name
+  command: lsb_release -cs
+  register: lsbrelease
+
+- name: add the APT repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ lsbrelease.stdout }} stable"
+    update_cache: yes
 
 - name: ensure that the latest '{{ docker_pkg_name }}' package is installed
   apt:
     pkg: "{{ docker_pkg_name }}"
     state: latest
     update_cache: yes
-
-# Install the package dependencies for Ansible docker module.
-- name: ensure that the latest python packages are installed
-  apt:
-    pkg: "{{ item.name }}"
-    state:  "{{ item.state }}"
-  with_items:
-    - { name: python, state: latest }
-    - { name: python-setuptools, state: latest }
-    - { name: python-pip, state: absent }
-
-- name: ensure that the dependent packages are installed via easy_install
-  easy_install:
-    name: "{{ item.name }}"
-    state:  "{{ item.state }}"
-  with_items:
-    - { name: pip, state: latest }
-
-- name: ensure that the dependent packages are installed via pip
-  pip:
-    name: "{{ item.name }}"
-    state:  "{{ item.state }}"
-  with_items:
-    - { name: docker-py==1.9.0, state: present }
 
 # Install docker-compose
 - name: get the OS name
@@ -76,13 +47,14 @@
   command: uname -m
   register: unamem
 
-- name: ensure that 'docker-compose' is installed
+- name: download the latest 'docker-compose' version
   get_url:
     url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ unames.stdout }}-{{ unamem.stdout }}"
     dest: "{{ docker_compose_path }}"
     owner: root
     group: root
     mode: "0755"
+    force: yes
 
 # Start the docker daemon.
 - name: restart docker

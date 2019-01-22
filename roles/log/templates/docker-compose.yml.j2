@@ -51,6 +51,8 @@ services:
     - {{ log_docker_proxy_network_name }}
     volumes:
     - {{ log_graylog_journal_path }}:/usr/share/graylog/data/journal
+    - {{ log_graylog_certs_path }}:/certs
+    - {{ log_graylog_trusted_clients_path }}:/trusted
     environment:
     - GRAYLOG_PASSWORD_SECRET={{ log_graylog_password_secret }}
     - GRAYLOG_ROOT_PASSWORD_SHA2={{ log_graylog_root_password_sha2 }}

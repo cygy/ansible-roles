@@ -13,6 +13,8 @@ log_elasticsearch_data_path: /data/es
 log_docker_graylog_image_name: graylog/graylog:2.5
 log_docker_graylog_container_name: graylog
 log_graylog_journal_path: graylog_journal
+log_graylog_certs_path: /certs
+log_graylog_trusted_clients_path: /trusted
 log_graylog_password_secret: strongpasswordsecrethere
 log_graylog_root_password_sha2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
 log_graylog_web_endpoint_uri: http://127.0.0.1:9000/api

@@ -8,17 +8,22 @@ docker_user_ssh_key_dest: docker
 docker_group: docker
 docker_group_id: 999
 docker_data_directory: /home/docker/data
-docker_apt_key_server: hkp://p80.pool.sks-keyservers.net:80
-docker_apt_key_id: 58118E89F3A912897C070ADBF76221572C52609D
-docker_apt_source_path: /etc/apt/sources.list.d/docker.list
-docker_install_experimental_version: 0
+docker_apt_key_server: https://download.docker.com/linux/debian/gpg
+docker_apt_key_id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
 docker_older_repositories:
+  - docker
+  - docker-engine
   - docker.io
   - lxc-docker
+  - containerd
+  - runc
 docker_dependencies:
   - apt-transport-https
   - ca-certificates
-docker_pkg_name: docker-engine
+  - curl
+  - gnupg2
+  - software-properties-common
+docker_pkg_name: docker-ce
 docker_service_name: docker
 docker_compose_path: /usr/local/bin/docker-compose
-docker_compose_version: "1.21.0"
+docker_compose_version: "1.23.2"
