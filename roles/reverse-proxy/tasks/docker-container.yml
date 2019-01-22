@@ -1,0 +1,25 @@
+---
+- name: start the docker container '{{ reverse_proxy_container_name }}'
+  docker_container:
+    image: "{{ reverse_proxy_image_name }}"
+    name: "{{ reverse_proxy_container_name }}"
+    detach: true
+    restart_policy: "always"
+    exposed_ports:
+    - 80
+    - 8080
+    - 443
+    published_ports:
+    - 80:80
+    - 8080:8080
+    - 443:443
+    volumes:
+    - "{{ reverse_proxy_configuration_file_dest }}:/etc/nginx/nginx.conf:ro"
+    - "{{ reverse_proxy_certs_directory_path }}:/etc/nginx/certs:ro"
+    networks:
+    - name: proxy
+    labels:
+      role: reverse-proxy
+
+- name: reload the reverse-proxy configuration
+  command: "docker restart {{ reverse_proxy_container_name }}"

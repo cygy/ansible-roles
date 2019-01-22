@@ -1,0 +1,14 @@
+---
+- name: create the directory of the data at '{{ reverse_proxy_configuration_file_directory }}'
+  file:
+    path: "{{ reverse_proxy_configuration_file_directory }}"
+    state: directory
+    owner: "{{ reverse_proxy_files_owner }}"
+    group: "{{ reverse_proxy_files_group }}"
+
+- name: copy the configuration file from '{{ reverse_proxy_configuration_file_src }}' to '{{ reverse_proxy_configuration_file_dest }}'
+  copy:
+    src: "{{ reverse_proxy_configuration_file_src }}"
+    dest: "{{ reverse_proxy_configuration_file_dest }}"
+    owner: "{{ reverse_proxy_files_owner }}"
+    group: "{{ reverse_proxy_files_group }}"

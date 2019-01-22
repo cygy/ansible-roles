@@ -1,9 +1,0 @@
----
-load_balancer_configuration_file_src: ~/nginx.conf
-load_balancer_configuration_file_dest: ~/nginx.conf
-load_balancer_configuration_file_directory: ~/
-load_balancer_certs_directory_path: /certs
-load_balancer_files_owner: user
-load_balancer_files_group: group
-load_balancer_image_name: nginx:latest
-load_balancer_container_name: load-balancer

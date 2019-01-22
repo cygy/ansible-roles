@@ -1,8 +1,8 @@
----
+--- 
 - name: start the 'cAdvisor' docker container
   docker_container:
     image: "google/cadvisor:latest"
-    name: "cadvisor"
+    name: "cadvisor-{{ hostname }}"
     detach: yes
     restart_policy: "always"
     exposed_ports:

@@ -1,9 +1,10 @@
 ---
-- name: disable default TCP connections
+- name: disallow TCP connections
   iptables:
     table: filter
     chain: INPUT
     protocol: tcp
+    source: "{{ docker_metrics_source }}"
     destination_port: "{{ docker_metrics_port }}"
     jump: ACCEPT
     state: absent
@@ -14,17 +15,6 @@
     table: filter
     chain: INPUT
     protocol: tcp
-    source: "{{ docker_metrics_source }}"
-    destination_port: "{{ docker_metrics_port }}"
-    jump: ACCEPT
-    comment: "from ansible"
-    
-- name: allow TCP connections
-  iptables:
-    table: filter
-    chain: INPUT
-    protocol: tcp
-    source: localhost
     destination_port: "{{ docker_metrics_port }}"
     jump: ACCEPT
     comment: "from ansible"

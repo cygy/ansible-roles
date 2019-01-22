@@ -1,0 +1,9 @@
+---
+reverse_proxy_configuration_file_src: ~/nginx.conf
+reverse_proxy_configuration_file_dest: ~/nginx.conf
+reverse_proxy_configuration_file_directory: ~/
+reverse_proxy_certs_directory_path: /certs
+reverse_proxy_files_owner: user
+reverse_proxy_files_group: group
+reverse_proxy_image_name: nginx:latest
+reverse_proxy_container_name: reverse-proxy
