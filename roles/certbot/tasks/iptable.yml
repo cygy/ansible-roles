@@ -1,5 +1,5 @@
 ---
-- name: allow HTTPS daemon connections
+- name: allow HTTP and HTTPS daemon connections
   iptables:
     table: filter
     chain: INPUT
@@ -8,4 +8,5 @@
     jump: ACCEPT
     comment: "from ansible"
   with_items:
+  - 80
   - 443

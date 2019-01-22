@@ -2,17 +2,16 @@
 monitoring_docker_compose_file_dest: /docker-compose.yml
 monitoring_docker_project_name: monitoring
 monitoring_docker_network_name: monitoring
+monitoring_docker_proxy_network_name: proxy
 monitoring_docker_prometheus_image_name: prom/prometheus:v2.0.0
 monitoring_docker_prometheus_container_name: prometheus
 monitoring_prometheus_conf_path: /etc/prometheus
 monitoring_prometheus_data_path: /prometheus
-monitoring_prometheus_port: 9090
 monitoring_prometheus_conf_scrape_interval: 15s
 monitoring_prometheus_conf_evaluation_interval: 15s
 monitoring_prometheus_monitored_hosts:
 monitoring_docker_grafana_image_name: grafana/grafana:5.4.3
 monitoring_docker_grafana_container_name: grafana
 monitoring_grafana_data_path: /grafana
-monitoring_grafana_port: 3000
 monitoring_files_owner: user
 monitoring_files_group: group
