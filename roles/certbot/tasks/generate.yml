@@ -1,5 +1,5 @@
 ---
-- name: generate the certificates
+- name: generate the certificates for the domains '{{ certbot_domains | join(', ') }}'
   command: certbot certonly --standalone --expand --agree-tos -n -m {{ certbot_email_address }} -d {{ certbot_domains | join(' -d ') }}
 
 - name: create the '{{ certbot_certs_path }}' directory
@@ -11,10 +11,10 @@
 
 - name: get the contents of the directory '{{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}'
   command: ls {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}
-  register: contents
+  register: cert_files
   when: certbot_certs_path is defined
 
-- name: copy the certificate files to the directory '{{ certbot_certs_path }}'
+- name: copy the certificate files from the directory '{{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}' to the directory '{{ certbot_certs_path }}'
   command: "cp {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}/{{ item }} {{ certbot_certs_path }}/{{ item }}"
-  with_items: "{{ contents.stdout_lines }}"
+  with_items: "{{ cert_files.stdout_lines }}"
   when: certbot_certs_path is defined
