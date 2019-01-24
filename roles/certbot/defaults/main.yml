@@ -5,3 +5,5 @@ certbot_certs_path:
 certbot_certs_path_prefix: ""
 certbot_original_certs_path: /etc/letsencrypt/live
 certbot_pkg_name: certbot
+certbot_pre_action_generate: ""
+certbot_post_action_generate: ""

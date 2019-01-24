@@ -1,6 +1,14 @@
 ---
+- name: execute the pre-generate action '{{ certbot_pre_action_generate }}'
+  command: "{{ certbot_pre_action_generate }}"
+  when: certbot_pre_action_generate != ""
+
 - name: generate the certificates for the domains '{{ certbot_domains | join(', ') }}'
   command: certbot certonly --standalone --expand --agree-tos -n -m {{ certbot_email_address }} -d {{ certbot_domains | join(' -d ') }}
+
+- name: execute the post-generate action '{{ certbot_post_action_generate }}'
+  command: "{{ certbot_post_action_generate }}"
+  when: certbot_post_action_generate != ""
 
 - name: create the '{{ certbot_certs_path }}' directory
   file:
