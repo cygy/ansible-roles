@@ -1,2 +1,7 @@
 ---
 hostname:
+kernel_install_image_custom: false
+kernel_image_custom_url: https://last-public-ovh-kernel.snap.mirrors.ovh.net/builds/4.9.179/736350/bzImage/4.9.179-xxxx-std-ipv6-64/bzImage-4.9.179-xxxx-std-ipv6-64
+kernel_update: false
+kernel_headers_name: linux-headers-4.9.0-0.bpo.9-amd64
+kernel_image_name: linux-image-4.9.0-0.bpo.9-amd64

@@ -40,7 +40,7 @@
     protocol: udp
     destination_port: "{{ item }}"
     jump: ACCEPT
-    comment: "from ansible paranoid role"
+    comment: "from ansible"
   with_items: "{{ paranoid_allowed_udp_ports }}"
   when: paranoid_allowed_udp_ports
 
@@ -51,7 +51,7 @@
     protocol: tcp
     destination_port: "{{ item }}"
     jump: ACCEPT
-    comment: "from ansible paranoid role"
+    comment: "from ansible"
   with_items: "{{ paranoid_allowed_tcp_ports }}"
   when: paranoid_allowed_tcp_ports
 

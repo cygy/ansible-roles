@@ -56,9 +56,40 @@
     mode: "0755"
     force: yes
 
-# Start the docker daemon.
-- name: restart docker
+# Stop the docker daemon.
+- name: stop docker
   service:
     name: "{{ docker_service_name }}"
-    state: restarted
+    state: stopped
+    enabled: yes
+
+# Redefine the docker lib directory
+- name: create the docker lib directory at '{{ docker_lib_directory }}'
+  file:
+    path: "{{ docker_lib_directory }}"
+    state: directory
+    mode: 0711
+    owner: root
+    group: root
+
+- name: update the docker lib directory to '{{ docker_lib_directory }}'
+  replace:
+    path: /lib/systemd/system/docker.service
+    regexp: 'ExecStart=/usr/bin/dockerd -H fd://'
+    replace: 'ExecStart=/usr/bin/dockerd -g {{ docker_lib_directory }} -H fd://'
+  register: newdockerlibdirectory
+
+- name: copy the docker files to '{{ docker_lib_directory }}'
+  command: rsync -aqxP /var/lib/docker/ {{ docker_lib_directory }}
+  when: newdockerlibdirectory.changed
+
+# Reload and start the docker daemon.
+- name: reload systemctl
+  command: systemctl daemon-reload
+  when: newdockerlibdirectory.changed
+
+- name: start docker
+  service:
+    name: "{{ docker_service_name }}"
+    state: started
     enabled: yes

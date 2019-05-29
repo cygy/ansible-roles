@@ -1,18 +1,27 @@
 ---
-- name: copy 'backport.list' file
-  copy:
-    src: files/backport.list
-    dest: /etc/apt/sources.list.d/backport.list
-    backup: yes
+- name: ensure 'backport.list' file is absent
+  file:
+    path: /etc/apt/sources.list.d/backport.list
+    state: absent
 
 - name: update the system
   apt:
     update_cache: yes
     upgrade: dist
 
-- name: ensure that the latest '{{ certbot_pkg_name }}' package is installed
+- name: ensure that the '{{ certbot_pkg_name }}' package is uninstalled
   apt:
     pkg: "{{ certbot_pkg_name }}"
-    state: latest
+    state: absent
     update_cache: yes
     default_release: jessie-backports
+
+- name: Download the latest version of the 'certbot-auto' file.
+  get_url:
+    url: "{{ certbot_auto_file_url }}"
+    dest: /usr/local/bin/certbot
+    mode: 0755
+
+- name: Remove any explicit references to tls-sni-01 in the renewal configuration.
+  command: sh -c "sed -i.bak -e 's/^\(pref_challs.*\)tls-sni-01\(.*\)/\1http-01\2/g' /etc/letsencrypt/renewal/*; rm -f /etc/letsencrypt/renewal/*.bak"
+  changed_when: False

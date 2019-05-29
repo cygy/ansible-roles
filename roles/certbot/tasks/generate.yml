@@ -1,6 +1,7 @@
 ---
 - name: execute the pre-generate action '{{ certbot_pre_action_generate }}'
   command: "{{ certbot_pre_action_generate }}"
+  ignore_errors: yes
   when: certbot_pre_action_generate != ""
 
 - name: generate the certificates for the domains '{{ certbot_domains | join(', ') }}'
@@ -8,6 +9,7 @@
 
 - name: execute the post-generate action '{{ certbot_post_action_generate }}'
   command: "{{ certbot_post_action_generate }}"
+  ignore_errors: yes
   when: certbot_post_action_generate != ""
 
 - name: create the '{{ certbot_certs_path }}' directory
@@ -21,6 +23,7 @@
   command: ls {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}
   register: cert_files
   when: certbot_certs_path is defined
+  changed_when: False
 
 - name: copy the certificate files from the directory '{{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}' to the directory '{{ certbot_certs_path }}'
   command: "cp {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}/{{ item }} {{ certbot_certs_path }}/{{ item }}"

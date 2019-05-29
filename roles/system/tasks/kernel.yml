@@ -1,0 +1,27 @@
+---
+- name: install the kernel headers
+  apt:
+    name: "{{ kernel_headers_name }}"
+  when: kernel_update
+
+- name: install the kernel image
+  apt:
+    name: "{{ kernel_image_name }}"
+  when: kernel_update
+  register: newkernelisinstalled
+
+- name: download the custom kernel file
+  get_url:
+    url: "{{ kernel_image_custom_url }}"
+    dest: /boot
+    mode: "0644"
+  when: kernel_image_custom
+  register: newkernelisdownloaded
+
+- name: update the boot
+  command: update-grub
+  when: kernel_image_custom and newkernelisdownloaded.changed
+
+- name: reboot
+  reboot:
+  when: (kernel_image_custom and newkernelisdownloaded.changed) or (kernel_update and newkernelisinstalled.changed)

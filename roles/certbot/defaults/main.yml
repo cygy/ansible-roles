@@ -7,3 +7,4 @@ certbot_original_certs_path: /etc/letsencrypt/live
 certbot_pkg_name: certbot
 certbot_pre_action_generate: ""
 certbot_post_action_generate: ""
+certbot_auto_file_url: https://dl.eff.org/certbot-auto

@@ -1,4 +1,21 @@
 ---
+- name: ensure 'backport.list' file is absent
+  file:
+    path: /etc/apt/sources.list.d/backport.list
+    state: absent
+
+- name: copy 'sources.list' file
+  copy:
+    src: files/sources.list
+    dest: /etc/apt/sources.list
+    backup: yes
+
+- name: copy '60archives' file
+  copy:
+    src: files/60archives
+    dest: /etc/apt/apt.conf.d/60archives
+    backup: yes
+
 - name: update the system
   apt:
     update_cache: yes
