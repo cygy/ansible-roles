@@ -2,7 +2,7 @@
 - name: ensure the cron job is present
   cron:
     name: renew the TLS certificates
-    job: "{{ certbot_pre_action_generate}}; certbot renew --quiet; cp {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}/* {{ certbot_certs_path }}/; {{ certbot_post_action_generate}}"
+    job: "{{ certbot_pre_action_generate}}; certbot renew --quiet; cp {{ certbot_original_certs_path }}/{{ certbot_domains[0] }}{{ certbot_certs_path_prefix }}/* {{ certbot_certs_path }}/; {{ certbot_post_action_generate }}"
     weekday: "3" # wednesday
     hour: "5"
     minute: "0"
