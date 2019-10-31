@@ -6,7 +6,7 @@
     detach: yes
     restart_policy: "always"
     exposed_ports:
-    - 8080
+    - "8080"
     published_ports:
     - "{{ docker_metrics_port }}:8080"
     volumes:

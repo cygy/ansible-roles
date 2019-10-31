@@ -8,9 +8,9 @@ mailserver_tls_path: /etc/letsencrypt
 mailserver_docker_compose_file_path: /data
 mailserver_postfix_accounts_config_file_name: postfix-accounts.cf
 mailserver_postfix_virtual_config_file_name: postfix-virtual.cf
-mailserver_smtp_port: 25
-mailserver_pop3_port: 110
-mailserver_imap_port: 143
-mailserver_msm_port: 587
-mailserver_simap_port: 993
-mailserver_spop3_port: 995
+mailserver_smtp_port: "25"
+mailserver_pop3_port: "110"
+mailserver_imap_port: "143"
+mailserver_msm_port: "587"
+mailserver_simap_port: "993"
+mailserver_spop3_port: "995"

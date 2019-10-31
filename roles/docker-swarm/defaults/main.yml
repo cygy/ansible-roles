@@ -4,9 +4,9 @@ docker_swarm_manager_port: 2377
 docker_swarm_is_main_manager: 0
 docker_swarm_is_manager: 0
 docker_tcp_ports:
-  - 2377
-  - 7946
-  - 4789
+  - "2377"
+  - "7946"
+  - "4789"
 docker_udp_ports:
-  - 7946
-  - 4789
+  - "7946"
+  - "4789"

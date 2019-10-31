@@ -6,9 +6,9 @@
     detach: true
     restart_policy: "always"
     exposed_ports:
-    - 80
-    - 8080
-    - 443
+    - "80"
+    - "8080"
+    - "443"
     published_ports:
     - 80:80
     - 8080:8080

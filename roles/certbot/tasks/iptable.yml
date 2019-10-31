@@ -8,5 +8,5 @@
     jump: ACCEPT
     comment: "from ansible"
   with_items:
-  - 80
-  - 443
+  - "80"
+  - "443"

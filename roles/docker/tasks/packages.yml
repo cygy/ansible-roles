@@ -18,6 +18,10 @@
     state: latest
     update_cache: yes
 
+- name: ensure that the latest Python docker SDK is installed
+  pip:
+    name: docker-py>=1.10.0
+
 - name: add GPG key from '{{ docker_apt_key_server }}'
   apt_key:
     url: "{{ docker_apt_key_server }}"
