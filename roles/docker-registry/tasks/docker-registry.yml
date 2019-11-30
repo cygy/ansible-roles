@@ -30,7 +30,7 @@
     detach: yes
     restart_policy: "always"
     exposed_ports:
-    - 5000
+    - "5000"
     published_ports:
     - "{{ docker_registry_port }}:5000"
     volumes:
