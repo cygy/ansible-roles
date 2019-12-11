@@ -30,7 +30,6 @@
     owner: "{{ blog_files_owner }}"
     group: "{{ blog_files_group }}"
     recurse: true
-  when: blog_moving_files == true
 
 - name: change the owner of the 'www/wp-content' folder
   file:
@@ -38,7 +37,6 @@
     owner: www-data
     group: www-data
     recurse: true
-  when: blog_moving_files == true
 
 - name: copy the docker compose file
   template:
