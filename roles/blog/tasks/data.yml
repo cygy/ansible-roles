@@ -1,5 +1,15 @@
 ---
-- name: create the mysql storage directory
+- name: delete the directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+  - "{{ blog_db_storage_path }}"
+  - "{{ blog_db_initdb_dest }}"
+  - "{{ blog_www_dest }}"
+  when: blog_reset == true
+
+- name: ensure the mysql storage directory is present
   file:
     path: "{{ blog_db_storage_path }}"
     state: directory
@@ -24,14 +34,30 @@
     perms: false
   when: blog_moving_files == true
 
-- name: change the owner of the 'www' folder
+- name: ensure the 'www' directory is present
+  file:
+    path: "{{ blog_www_dest }}"
+    state: directory
+    owner: "{{ blog_files_owner }}"
+    group: "{{ blog_files_group }}"
+    mode: 0775
+
+- name: change the owner of the 'www' directory
   file:
     path: "{{ blog_www_dest }}"
     owner: "{{ blog_files_owner }}"
     group: "{{ blog_files_group }}"
     recurse: true
 
-- name: change the owner of the 'www/wp-content' folder
+- name: ensure the 'www/wp-content' directory is present
+  file:
+    path: "{{ blog_www_dest }}/wp-content"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: 0775
+
+- name: change the owner of the 'www/wp-content' directory
   file:
     path: "{{ blog_www_dest }}/wp-content"
     owner: www-data

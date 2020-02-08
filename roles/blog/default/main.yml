@@ -3,6 +3,7 @@ blog_files_owner: user
 blog_files_group: group
 blog_db_storage_path: /mysql
 blog_moving_files: false
+blog_reset: false
 blog_www_src: /www
 blog_www_dest: /www
 blog_db_initdb_src: /mysql-initdb.d
